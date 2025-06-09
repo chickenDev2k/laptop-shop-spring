@@ -46,12 +46,12 @@ public class ProductController {
         model.addAttribute("products", list);
     
         
-        return "/admin/product/show";
+        return "admin/product/show";
     }
     @GetMapping("/admin/product/create")
     public String getCreateProductPage(Model model){
         model.addAttribute("newProduct",new Product());
-        return "/admin/product/create";
+        return "admin/product/create";
     }
 
 
@@ -68,7 +68,7 @@ public class ProductController {
         }
         //validate no redirect because data will lost
         if(newProductBindingResult.hasErrors()){
-            return "/admin/product/create";
+            return "admin/product/create";
         }
         //
         String productImage = this.uploadService.handleSaveUploadFile(file,"product");
@@ -87,7 +87,7 @@ public class ProductController {
         model.addAttribute("newProduct", currentProduct);
          model.addAttribute("productImg",("/images/product/"+currentProduct.getImage()));
 
-        return "/admin/product/update";
+        return "admin/product/update";
     }
     @PostMapping("/admin/product/update")
     public String updateProduct(Model model,@ModelAttribute("newProduct") Product product,BindingResult newUserBindingResult ,@RequestParam("productImgFile") MultipartFile file){
@@ -98,7 +98,7 @@ public class ProductController {
         }
         //validate no redirect because data will lost
         if(newUserBindingResult.hasErrors()){
-            return "/admin/product/update";
+            return "admin/product/update";
         }
         Product checkProduct = this.productService.getProductById(product.getId());
         
@@ -140,7 +140,7 @@ public class ProductController {
                 model.addAttribute("urlImage", productDetail.getImage());
             }
 
-          return "/admin/product/productDetail";
+          return "admin/product/productDetail";
       }
 
        /****      delete  product         *****/
@@ -148,7 +148,7 @@ public class ProductController {
     public String getDeletePage(@PathVariable long id,Model model) {
         Product productDelete = this.productService.getProductById(id);
         model.addAttribute("productDelete", productDelete);
-        return "/admin/product/productDelete";
+        return "admin/product/productDelete";
     }
 
 

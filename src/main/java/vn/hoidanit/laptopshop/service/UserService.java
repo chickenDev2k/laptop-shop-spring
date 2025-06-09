@@ -26,9 +26,9 @@ public class UserService {
     public List<User> getALlUsers(){
         return this.userRepository.findAll();
     }
-    public List<User> getALlUsersByEmail(String email){
-        return this.userRepository.findByEmail(email);
-    }
+    // public List<User> getALlUsersByEmail(String email){
+    //     return this.userRepository.findByEmail(email);
+    // }
     public User getUserById(long id){
         return this.userRepository.findUserById(id);
     }
@@ -62,11 +62,12 @@ public class UserService {
 
         return user;
     }
-
-
     public boolean checkEmailExist(String email) {
         return this.userRepository.existsByEmail(email);
       
+    }
+    public User getUserByEmail(String email) {
+       return this.userRepository.findByEmail(email);
     }
     
 }

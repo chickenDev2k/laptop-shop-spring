@@ -42,13 +42,13 @@ public class UserController{
     }
 
 
-    @RequestMapping("/") //default is method get
-    public String getHomePage(Model model){
-        List<User> arrUser = this.userService.getALlUsersByEmail("taquanga6dp@gmail.com");
-        System.out.println(arrUser);
+    // @RequestMapping("") //default is method get
+    // public String getHomePage(Model model){
+    //     // List<User> arrUser = this.userService.getALlUsersByEmail("taquanga6dp@gmail.com");
+    //     // System.out.println(arrUser);
     
-        return "hello";
-    }
+    //     return "hello";
+    // }
     @GetMapping("/admin/user")
     public String getUserListPage(Model model){
         List<User> users = this.userService.getALlUsers();
@@ -95,7 +95,7 @@ public class UserController{
         }
         //validate no redirect because data will lost
         if(newUserBindingResult.hasErrors()){
-            return "/admin/user/create";
+            return "admin/user/create";
         }
         //
         String avatar = this.uploadService.handleSaveUploadFile(file,"avatar");
@@ -140,7 +140,7 @@ public class UserController{
         return  "redirect:/admin/user";
     }
 
-    @GetMapping("admin/user/delete/{id}")
+    @GetMapping("/admin/user/delete/{id}")
     public String confirmDeleteUser(Model model, @PathVariable("id") long id){
         final User user = new User();
         user.setId(id);

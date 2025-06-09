@@ -1,5 +1,6 @@
 package vn.hoidanit.laptopshop.domain.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import vn.hoidanit.laptopshop.service.validator.RegisterChecked;
 
@@ -10,6 +11,7 @@ public class RegisterDTO {
    
     private String lastName;
    
+    @Email
     private String email;
    
     private String password;

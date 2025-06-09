@@ -16,7 +16,8 @@ import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.domain.dto.RegisterDTO;
 import vn.hoidanit.laptopshop.service.ProductService;
 import vn.hoidanit.laptopshop.service.UserService;
-
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 
@@ -34,19 +35,21 @@ public class HomePageController {
     }
 
 
-    @GetMapping()
-    public String getHomePage(Model model){
+    @GetMapping("/")
+    public String getHomePage(Model model,HttpServletRequest request){
         List<Product> products = this.productService.getAllProduct();
         
         
         model.addAttribute("products", products);
-        return "/client/homepage/show";
+        HttpSession session = request.getSession(false);
+        
+        return "client/homepage/show";
     }
 
     @GetMapping("/register")
     public String getRegisterPage(Model model) {
         model.addAttribute("registerUser", new RegisterDTO());
-        return "/client/auth/register";
+        return "client/auth/register";
     }
     
     @PostMapping("/register")
@@ -58,7 +61,7 @@ public class HomePageController {
         }
         
         if(bindingResult.hasErrors()){
-            return "/client/auth/register";
+            return "client/auth/register";
         }
 
        User user = (User) this.userService.RegisterDTOtoUser(registerDTO);
@@ -68,9 +71,17 @@ public class HomePageController {
        this.userService.handleSaveUser(user);
         return "redirect:/login";
     }
+
     @GetMapping("/login")
-    public String getLoginPage() {
-        return "/client/auth/login";
+    public String getLoginPage(Model model) {
+        User loginUser = new User();
+        model.addAttribute("loginUser", loginUser);
+        return "client/auth/login";
+    }
+    @GetMapping("/access-deny")
+    public String getDenyPage(Model model) {
+       
+        return "client/auth/deny";
     }
     
     
