@@ -41,7 +41,7 @@
                         <div class="row g-4">
                             <div class="col-lg-3">
                                 <a href="#">
-                                    <img src="/client/img/logo-shop.png" alt="Logo shop" class="logo-shop">
+                                    <img src="/client/img/logo.png" alt="Logo shop" class="logo-shop w-50">
                                 </a>
                             </div>
                             <div class="col-lg-6">

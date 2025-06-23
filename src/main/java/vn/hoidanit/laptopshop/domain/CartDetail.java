@@ -1,4 +1,5 @@
 package vn.hoidanit.laptopshop.domain;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,36 +9,26 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "order_detail")
-public class OrderDetail {
+@Table(name = "cart_detail")
+public class CartDetail {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private long quantity;
+
     private double price;
 
+    // cart_id long
     @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 
-    @ManyToOne
+    // product_id: long
+    @ManyToOne()
     @JoinColumn(name = "product_id")
     private Product product;
-
-    
-    
-
-    public OrderDetail() {
-    }
-
-    public OrderDetail(long id, long quantity, double price, Order order, Product product) {
-        this.id = id;
-        this.quantity = quantity;
-        this.price = price;
-        this.order = order;
-        this.product = product;
-    }
 
     public long getId() {
         return id;
@@ -63,12 +54,12 @@ public class OrderDetail {
         this.price = price;
     }
 
-    public Order getOrder() {
-        return order;
+    public Cart getCart() {
+        return cart;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public Product getProduct() {
@@ -79,6 +70,11 @@ public class OrderDetail {
         this.product = product;
     }
 
+    @Override
+    public String toString() {
+        return "CartDetail [id=" + id + ", quantity=" + quantity + ", price=" + price + ", cart=" + cart + ", product="
+                + product + "]";
+    }
 
     
 

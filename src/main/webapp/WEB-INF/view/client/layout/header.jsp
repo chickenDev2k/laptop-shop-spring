@@ -30,6 +30,26 @@
             <!-- Template Stylesheet -->
             <link href="/client/css/style.css" rel="stylesheet">
 
+            <!-- add class name to a tag -->
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const currentPath = window.location.pathname.replace(/\/$/, "").toLowerCase(); // normalize path
+
+                    const navElement = document.querySelector("#navbarCollapse");
+                    const links = navElement.querySelectorAll("a.nav-link");
+
+                    links.forEach(link => {
+                        const href = link.getAttribute("href").replace(/\/$/, "").toLowerCase(); // normalize href
+
+                        if (href === currentPath) {
+                            link.classList.add("active");
+                        } else {
+                            link.classList.remove("active");
+                        }
+                    });
+                });
+            </script>
+
 
         </head>
 
@@ -49,7 +69,7 @@
                 <div class="container px-0">
                     <nav class="navbar navbar-light bg-white navbar-expand-xl">
                         <a href="/" class="navbar-brand">
-                            <img src="/client/img/logo-shop.png" alt="MY SHOP" class="logo-shop">
+                            <img src="/client/img/logo.png" alt="MY SHOP" class="logo-shop">
                         </a>
                         <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarCollapse">
@@ -57,27 +77,29 @@
                         </button>
                         <div class="collapse navbar-collapse bg-white justify-content-between mx-5" id="navbarCollapse">
                             <div class="navbar-nav">
-                                <a href="/" class="nav-item nav-link active">Home</a>
-                                <a href="/product" class="nav-item nav-link">All Product</a>
+                                <a href="/" class="nav-item nav-link ">Home</a>
+                                <a href="/products" class="nav-item nav-link">All Product</a>
                             </div>
                             <div class="d-flex m-3 me-0">
 
                                 <!-- if user has been login -->
                                 <c:if test="${not empty pageContext.request.userPrincipal}">
-
-
-                                    <a href="#" class="position-relative me-4 my-auto">
+                                    <a href="/cart" class="position-relative me-4 my-auto">
                                         <i class="fa fa-shopping-bag fa-2x"></i>
                                         <span
                                             class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
-                                            style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                                            style="top: -5px; left: 15px; height: 20px; min-width: 20px;" id="sumCart">
+                                            ${sessionScope.sum}
+                                        </span>
                                     </a>
                                     <div class="dropdown my-auto">
+
                                         <a href="#" class="dropdown" role="button" id="dropdownMenuLink"
                                             data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="dropdown"
                                             aria-expanded="false">
                                             <i class="fas fa-user fa-2x"></i>
                                         </a>
+
 
                                         <ul class="dropdown-menu dropdown-menu-end p-4"
                                             aria-labelledby="dropdownMenuLink">
@@ -92,7 +114,8 @@
 
                                             <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
 
-                                            <li><a class="dropdown-item" href="#">Lịch sử mua hàng</a></li>
+                                            <li><a class="dropdown-item" href="/client/history">Lịch sử mua hàng</a>
+                                            </li>
                                             <li>
                                                 <hr class="dropdown-divider">
                                             </li>

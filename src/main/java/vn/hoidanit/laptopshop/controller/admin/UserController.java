@@ -4,8 +4,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 import vn.hoidanit.laptopshop.domain.User;
+import vn.hoidanit.laptopshop.repository.UserRepository;
 import vn.hoidanit.laptopshop.service.UploadService;
 import vn.hoidanit.laptopshop.service.UserService;
 
@@ -31,13 +35,15 @@ public class UserController{
   private UserService userService ;
   private final UploadService uploadService;
   private final PasswordEncoder passwordEncoder;
+  private final UserRepository userRepository;
 
     
 
-    public UserController(UserService userService,UploadService uploadService,PasswordEncoder passwordEncoder) {
+    public UserController(UserService userService,UploadService uploadService,PasswordEncoder passwordEncoder,UserRepository userRepository) {
        this.uploadService = uploadService;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
        
     }
 
@@ -50,10 +56,24 @@ public class UserController{
     //     return "hello";
     // }
     @GetMapping("/admin/user")
-    public String getUserListPage(Model model){
-        List<User> users = this.userService.getALlUsers();
+    public String getUserListPage(Model model,@RequestParam("page") Optional<String> optionalPage){
+
+        int page = 1;
+        try {
+            page = Integer.parseInt(optionalPage.get());
+
+        } catch (Exception e) {
+           page = 1;
+        }
+
+        org.springframework.data.domain.Pageable pageable = PageRequest.of(page-1, 10);
+        Page<User> usersPage = this.userRepository.findAll(pageable);
+        List<User> users = usersPage.getContent();
         int num0 = 0;
+    
         model.addAttribute("num0", num0);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", usersPage.getTotalPages());
         model.addAttribute("users", users);
         //System.out.println(users);
         return "admin/user/show";

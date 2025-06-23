@@ -81,6 +81,36 @@
 
                                                     </tbody>
                                                 </table>
+                                                <nav aria-label="...">
+                                                    <ul class="pagination justify-content-center">
+                                                        <li class="page-item">
+                                                            <a href="/admin/product?page=${currentPage > 2 ?(currentPage - 1):1}"
+                                                                class="${1 == currentPage ? 'disabled':''} page-link">
+                                                                <!-- previous <<  -->
+                                                                <span aria-hidden="true">&lt;&lt;</span>
+
+                                                            </a>
+                                                        </li>
+
+                                                        <c:forEach begin="0" end="${totalPages-1}" varStatus="loop">
+                                                            <li class="page-item">
+                                                                <a class="${(loop.index +1) == currentPage ? 'active':''} page-link"
+                                                                    href="/admin/product?page=${loop.index + 1}">
+                                                                    ${loop.index + 1}</a>
+                                                            </li>
+                                                        </c:forEach>
+
+
+                                                        <li class="page-item">
+                                                            <a class="page-link ${totalPages == currentPage ? 'disabled':''} page-link "
+                                                                href="/admin/product?page=${currentPage >= totalPages ?currentPage :(currentPage + 1)}"
+                                                                aria-hidden="true">
+                                                                <!-- next >>  -->
+                                                                <span aria-hidden="true">&gt;&gt;</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </nav>
                                             </div>
                                         </div>
                                     </div>

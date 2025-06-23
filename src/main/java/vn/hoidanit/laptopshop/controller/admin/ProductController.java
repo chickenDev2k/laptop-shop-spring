@@ -1,13 +1,15 @@
 package vn.hoidanit.laptopshop.controller.admin;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,9 +43,25 @@ public class ProductController {
     //*** create   ****/
 
     @GetMapping("/admin/product")
-    public String getDashboard(Model model){
-        List<Product> list = this.productService.getAllProduct();
-        model.addAttribute("products", list);
+    public String getDashboard(Model model,@RequestParam(name="page",required = false,defaultValue = "1") Optional<String> pageOptional)
+    {
+        int page = 1;
+        try{
+            if(pageOptional.isPresent()){
+                page = Integer.parseInt(pageOptional.get());
+
+            }
+        }catch(Exception e){
+                page = 1;
+        }
+       
+        Pageable pageable = PageRequest.of(page-1, 10);   
+              // to get all product without filter like %%
+        Page<Product> productsPage = this.productService.getAllProduct(pageable); 
+        List<Product> products = productsPage.getContent();
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productsPage.getTotalPages());
+        model.addAttribute("products", products);
     
         
         return "admin/product/show";
